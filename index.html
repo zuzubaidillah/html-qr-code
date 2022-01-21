@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+<head>
+<title>Cross-Browser QRCode generator for Javascript</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="qrcode.min.js"></script>
+
+<style>
+    @page {
+        margin: 0cm;
+    }
+
+    body {
+        width: 21cm;
+        height: 29.7cm;
+        display: grid;
+        outline: 2px solid red;
+        gap: 0.6cm;
+        box-sizing: content-box;
+        grid-template-columns: repeat(auto-fill, 1.5cm);
+        grid-template-rows: repeat(auto-fill, 2cm);
+    }
+
+    div.qrcontainer img {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    div.qrdescription {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 0.5rem;
+        line-height: 2;
+        text-align: center;
+        font-weight: bold;
+    }
+
+</style>
+</head>
+<body class="a4">
+
+
+
+<script type="text/javascript">
+
+function makeQRCode(content, desc, config = {}) {
+
+    config.descriptionclass ??= "qrdescription"
+    config.containerclass ??= "qrcontainer"
+    config.fg ??= "rgba(25,25,22,1)"
+    config.bg ??= "rgba(255,255,255,0)"
+    config.width ??= 500
+    config.height ??= 500
+
+    window.xxxqrcodeglobalid ??= 0
+    let id = window.xxxqrcodeglobalid += 1
+    let qrcontainer = document.createElement("div")
+    qrcontainer.setAttribute("class", config.containerclass)
+    qrcontainer.setAttribute("id", id.toString())
+    let qr=new QRCode(qrcontainer, {
+        text: content,
+        width: config.width,
+        height: config.height,
+        colorDark: config.fg,
+        colorLight: config.bg,
+        correctLevel: QRCode.CorrectLevel.H,
+    });
+
+    let qrdescription = document.createElement("div")
+    qrdescription.setAttribute("class", config.descriptionclass)
+    qrdescription.textContent = desc
+    qrcontainer.appendChild(qrdescription)
+
+    return qrcontainer
+}
+
+for(let i=0;i<20;i++) {
+    document.body.appendChild(makeQRCode("BRG002242", "BRG002242"))
+}
+</script>
+</body>
